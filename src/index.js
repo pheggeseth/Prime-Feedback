@@ -6,10 +6,17 @@ import registerServiceWorker from './registerServiceWorker';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import logger from 'redux-logger';
- 
+import feeling from './redux/reducers/feeling.reducer';
+import understanding from './redux/reducers/understanding.reducer';
+import support from './redux/reducers/support.reducer';
+import comments from './redux/reducers/comments.reducer';
+
 const storeInstance = createStore(
  combineReducers({
-   // reducers go here, separated by commas,
+   feeling,
+   understanding,
+   support,
+   comments
  }),
  applyMiddleware(logger),
 );
