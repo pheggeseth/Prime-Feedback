@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import './App.css';
+// import { HashRouter as Router, Route, Link } from 'react-router-dom';
 
 class App extends Component {
   render() {
