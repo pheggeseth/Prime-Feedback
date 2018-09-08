@@ -5,10 +5,9 @@ const pool = require('../modules/pool.js');
 pool.on('connect', () => console.log('Postgresql feedback router connection'));
 pool.on('error', error => console.log('Error connecting to feedback router:', error));
 
-// get route params with "/route/:paramName, then reference it as req.params.paramName"
 router.get('/', (req, res) => {
-  // POSTGRESQL SAMPLE GET
-  pool.query(`SELECT * FROM "feedback";`)
+  console.log('/feedback GET hit');
+  pool.query(`SELECT * FROM "feedback" ORDER BY "id" DESC;`)
     .then(results => res.send(results.rows))
     .catch(error => {
       console.log('DB Query Error:', error);

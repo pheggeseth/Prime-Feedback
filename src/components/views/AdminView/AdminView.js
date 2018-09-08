@@ -41,6 +41,7 @@ class AdminView extends Component {
   };
 
   render() {
+    const sortedFeedback = [...this.state.feedback].sort((a,b) => a.date - b.date);
     return (
       <div>
         <table>
@@ -55,7 +56,7 @@ class AdminView extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.feedback.map(entry => (
+            {sortedFeedback.map(entry => (
               <tr key={entry.id}>
                 <td>{entry.feeling}</td>
                 <td>{entry.understanding}</td>
