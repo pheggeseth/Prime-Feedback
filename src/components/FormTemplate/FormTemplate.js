@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions.js';
 
@@ -47,16 +48,27 @@ class FormTemplate extends Component {
 
   handleBack = () => this.goToPage(this.props.prevPage);
 
+  handleSubmit = () => {
+    axios.post()
+    this.goToPage('/form/success');
+  }
+
   render() {
+    let backButtonIfPath = null;
+    let nextButtonIfPath = null;
+    let submitFormButtonIfRequired = null;
+    if (this.props.prevPage) backButtonIfPath = <button type="button" onClick={this.handleBack}>Back</button>;
+    if (this.props.nextPage) nextButtonIfPath = <button type="button" onClick={this.handleNext}>Next</button>;
+    if (this.props.submitForm) submitFormButtonIfRequired = <button type="button" onClick={this.handleSubmit}>Submit Feedback</button>
+
     return (
       <div>
         <h1>{this.props.prompt}</h1>
         <form>
           <input type="text" value={this.state.value} onChange={this.handleChange}/>
-          {this.props.prevPage
-          ? <button type="button" onClick={this.handleBack}>Back</button> 
-          : null}
-          <button type="button" onClick={this.handleNext}>Next</button>
+          {backButtonIfPath}
+          {nextButtonIfPath}
+          {submitFormButtonIfRequired}
         </form>
       </div>
     );
