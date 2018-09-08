@@ -20,26 +20,23 @@ class FormTemplate extends Component {
   };
 
   // submitting form should take us to next page, handled by parent view
-  handleSubmit = event => {
-    event.preventDefault();
-    this.props.onNext(this.state.value);
-  };
+  handleNext = () => this.props.onNext(this.state.value);
 
   render() {
     let backButton = null;
     // if an onBack prop is provided, render a Back button so we can go to the previous page
     // handled by parent view
     if (this.props.onBack) {
-      backButton = <button onClick={this.props.onBack}>Back</button>;
+      backButton = <button type="button" onClick={this.props.onBack}>Back</button>;
     }
 
     return (
       <div>
         <h1>{this.props.prompt}</h1>
-        <form onSubmit={this.handleSubmit}>
+        <form>
           <input type="text" value={this.state.value} onChange={this.handleChange}/>
           {backButton}
-          <button type="submit">Next</button>
+          <button type="button" onClick={this.handleNext}>Next</button>
         </form>
       </div>
     );

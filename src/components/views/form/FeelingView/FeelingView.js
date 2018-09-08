@@ -4,13 +4,7 @@ import { connect } from 'react-redux';
 import { UPDATE_FEELING } from '../../../../redux/actions.js';
 
 class FeelingView extends Component {
-
-  handleNext = value => {
-    this.saveFeelingInRedux(value);
-    this.goToNextPage('/form/understanding');
-  };
-
-  saveFeelingInRedux = value => {
+  saveFeelingToRedux = value => {
     const action = {
       type: UPDATE_FEELING,
       payload: value
@@ -18,7 +12,16 @@ class FeelingView extends Component {
     this.props.dispatch(action);
   };
 
-  goToNextPage = path => this.props.history.push(path);
+  goToPage = path => this.props.history.push(path);
+
+  handleNext = value => {
+    const valueInRedux = this.props.reduxState.feeling;
+    if (valueInRedux !== value) {
+      this.saveFeelingToRedux(value);
+    }
+    
+    this.goToPage('/form/understanding');
+  };
 
   render() {
     return (
