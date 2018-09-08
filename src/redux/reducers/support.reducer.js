@@ -1,4 +1,4 @@
-const support = (state = null, action) => {
+const support = (state = '', action) => {
   return state;
 };
 

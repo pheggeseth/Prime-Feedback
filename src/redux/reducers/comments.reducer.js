@@ -1,4 +1,4 @@
-const comments = (state = null, action) => {
+const comments = (state = '', action) => {
   return state;
 };
 

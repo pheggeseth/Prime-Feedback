@@ -1,4 +1,4 @@
-const understanding = (state = null, action) => {
+const understanding = (state = '', action) => {
   return state;
 };
 

@@ -1,0 +1,1 @@
+export const UPDATE_FEELING = 'UPDATE_FEELING';
