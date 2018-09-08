@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   const newFeedback = req.body;
-  console.log('/feedback POST hit:', itemToAdd); 
+  console.log('/feedback POST hit:', newFeedback); 
   const query = `INSERT INTO "feedback" ("feeling", "understanding", "support", "comments") 
     VALUES ($1, $2, $3, $4);`;
   pool.query(query, [

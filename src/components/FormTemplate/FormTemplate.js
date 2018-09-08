@@ -49,14 +49,39 @@ class FormTemplate extends Component {
   handleBack = () => this.goToPage(this.props.prevPage);
 
   handleSubmit = () => {
-    axios.post()
-    this.goToPage('/form/success');
+    const feeling = Number(this.props.reduxState.feeling);
+    const understanding = Number(this.props.reduxState.understanding);
+    const support = Number(this.props.reduxState.support);
+    const comments = this.state.value; // submit only happens on comments form view
+
+    const feedback = {
+      feeling,
+      understanding,
+      support,
+      comments
+    };
+
+    axios.post('/feedback', feedback)
+    .then(response => {
+      console.log('/feedback POST request success:', response);
+      this.goToPage('/form/success');
+    }).catch(error => {
+      console.log('/feedback POST request error:', error);
+      alert('Error submitting feedback!');
+    });
   }
 
   render() {
+    let inputField = null;
     let backButtonIfPath = null;
     let nextButtonIfPath = null;
     let submitFormButtonIfRequired = null;
+
+    if (this.props.category === 'comments') {
+      inputField = <input type="text" value={this.state.value} onChange={this.handleChange} />
+    } else {
+      inputField = <input type="number" min="1" max="5" value={this.state.value} onChange={this.handleChange} />
+    }
     if (this.props.prevPage) backButtonIfPath = <button type="button" onClick={this.handleBack}>Back</button>;
     if (this.props.nextPage) nextButtonIfPath = <button type="button" onClick={this.handleNext}>Next</button>;
     if (this.props.submitForm) submitFormButtonIfRequired = <button type="button" onClick={this.handleSubmit}>Submit Feedback</button>
@@ -65,7 +90,7 @@ class FormTemplate extends Component {
       <div>
         <h1>{this.props.prompt}</h1>
         <form>
-          <input type="text" value={this.state.value} onChange={this.handleChange}/>
+          {inputField}
           {backButtonIfPath}
           {nextButtonIfPath}
           {submitFormButtonIfRequired}
