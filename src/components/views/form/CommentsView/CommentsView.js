@@ -10,7 +10,7 @@ class CommentsView extends Component {
           prompt="Any comments you would like to leave?"
           history={this.props.history}
           prevPage="/form/support"
-          submitForm />
+          nextPage="/form/submit" />
       </div>
     );
   }

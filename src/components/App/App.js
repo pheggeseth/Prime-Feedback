@@ -6,6 +6,7 @@ import FeelingView from '../views/form/FeelingView/FeelingView.js';
 import UnderstandingView from '../views/form/UnderstandingView/UnderstandingView.js';
 import SupportView from '../views/form/SupportView/SupportView.js';
 import CommentsView from '../views/form/CommentsView/CommentsView.js';
+import SubmitView from '../views/form/SubmitView/SubmitView.js';
 import SuccessView from '../views/form/SuccessView/SuccessView.js';
 import AdminView from '../views/AdminView/AdminView.js';
 
@@ -19,6 +20,7 @@ class App extends Component {
           <Route path="/form/understanding" component={UnderstandingView} />
           <Route path="/form/support" component={SupportView} />
           <Route path="/form/comments" component={CommentsView} />
+          <Route path="/form/submit" component={SubmitView} />
           <Route path="/form/success" component={SuccessView} />
           <Route path="/admin" component={AdminView} />
         </div>

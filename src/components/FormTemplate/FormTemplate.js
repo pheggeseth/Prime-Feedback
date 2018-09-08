@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions.js';
 
@@ -25,6 +24,9 @@ class FormTemplate extends Component {
     });
   };
 
+  // calling saveValueToRedux will take whatever is currently stored
+  // in this.state.value and save it in the Redux store, using the 'UPDATE'
+  // action corresponding to the 'category' supplied to props in FormTemplate
   saveValueToRedux = value => {
     const action = {
       type: actions[`UPDATE_${this.props.category.toUpperCase()}`],
@@ -33,58 +35,44 @@ class FormTemplate extends Component {
     this.props.dispatch(action);
   };
 
+  // uses react-router-dom to navigate to a specific view
   goToPage = path => this.props.history.push(path);
 
   // submitting form should take us to next page, handled by parent view
   handleNext = () => {
-    const value = this.state.value;
-    const valueInRedux = this.props.reduxState[this.props.category];
+    const valueInState = this.state.value;
 
-    if (value !== valueInRedux) {
-      this.saveValueToRedux(value);
+    if (entryIsCompleted([this.props.category, valueInState])) {
+      const valueInRedux = this.props.reduxState[this.props.category];
+
+      if (valueInState !== valueInRedux) {
+        this.saveValueToRedux(valueInState);
+      }
+      this.goToPage(this.props.nextPage);
+    } else {
+      alert('Please give feedback before continuing.');
+      return;
     }
-    this.goToPage(this.props.nextPage);
   };
 
+  // go to the previous page when the user clicks the Back button
+  // this will abandon changes on this page if the user has not first clicked "Next"
   handleBack = () => this.goToPage(this.props.prevPage);
-
-  handleSubmit = () => {
-    const feeling = Number(this.props.reduxState.feeling);
-    const understanding = Number(this.props.reduxState.understanding);
-    const support = Number(this.props.reduxState.support);
-    const comments = this.state.value; // submit only happens on comments form view
-
-    const feedback = {
-      feeling,
-      understanding,
-      support,
-      comments
-    };
-
-    axios.post('/feedback', feedback)
-    .then(response => {
-      console.log('/feedback POST request success:', response);
-      this.goToPage('/form/success');
-    }).catch(error => {
-      console.log('/feedback POST request error:', error);
-      alert('Error submitting feedback!');
-    });
-  }
+  // TODO: add confirm dialog letting user know their changes will be abandoned
 
   render() {
     let inputField = null;
     let backButtonIfPath = null;
     let nextButtonIfPath = null;
-    let submitFormButtonIfRequired = null;
 
     if (this.props.category === 'comments') {
       inputField = <input type="text" value={this.state.value} onChange={this.handleChange} />
     } else {
       inputField = <input type="number" min="1" max="5" value={this.state.value} onChange={this.handleChange} />
     }
+
     if (this.props.prevPage) backButtonIfPath = <button type="button" onClick={this.handleBack}>Back</button>;
     if (this.props.nextPage) nextButtonIfPath = <button type="button" onClick={this.handleNext}>Next</button>;
-    if (this.props.submitForm) submitFormButtonIfRequired = <button type="button" onClick={this.handleSubmit}>Submit Feedback</button>
 
     return (
       <div>
@@ -93,12 +81,21 @@ class FormTemplate extends Component {
           {inputField}
           {backButtonIfPath}
           {nextButtonIfPath}
-          {submitFormButtonIfRequired}
         </form>
       </div>
     );
   }
 }
+
+// HELPER FUNCTIONS
+const entryIsCompleted = entry => {
+  const [key, value] = entry;
+  if (key === 'comments') {
+    return true; // comments are optional
+  } else {
+    return Number(value) > 0;
+  }
+};
 
 const mapReduxStateToProps = (reduxState) => ({reduxState});
 export default connect(mapReduxStateToProps)(FormTemplate);
