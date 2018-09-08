@@ -7,19 +7,13 @@ pool.on('error', error => console.log('Error connecting to feedback router:', er
 
 // get route params with "/route/:paramName, then reference it as req.params.paramName"
 router.get('/', (req, res) => {
-  // MONGODB SAMPLE GET
-  // model.find({}) // or something like model.find({amount: {$gt: something, $lt: something}})
-  //   .then(models => res.send(models))
-  //   .catch(error => res.sendStatus(500));
-  // const query = 'SELECT * FROM "table-name";';
-
   // POSTGRESQL SAMPLE GET
-  // pool.query(query)
-  //   .then(results => res.send(results.rows))
-  //   .catch(error => {
-  //     console.log('DB Query Error:', error);
-  //     res.sendStatus(500);
-  //   });
+  pool.query(`SELECT * FROM "feedback";`)
+    .then(results => res.send(results.rows))
+    .catch(error => {
+      console.log('DB Query Error:', error);
+      res.sendStatus(500);
+    });
 });
 
 router.post('/', (req, res) => {
@@ -39,27 +33,17 @@ router.post('/', (req, res) => {
   });
 });
 
-router.put('/:id', (req, res) => {
-  /* 
-  Model.findOne({_id: req.params.id})
-    .then(foundModel => {
-      //alter model then save in database
-    }).catch(error => res.sendStatus(500));
-  */
-
-  // POSTGRESQL SAMPLE PUT
-  //  const updatedShoe = req.body;
-  //  const queryText = `UPDATE "shoes" 
-  //                     SET "name" = $1, "cost" = $2, "size" = $3
-  //                     WHERE "id" = $4;`;
-  //  pool.query(queryText, [updatedShoe.name,
-  //                         updatedShoe.cost, 
-  //                         updatedShoe.size, 
-  //                         updatedShoe.id]).then( (result) => {
-  //                             res.sendStatus(200);
-  //                         }).catch( (error) => {
-  //                             res.sendStatus(500);
-  //                         });
+router.put('/flag', (req, res) => {
+  const entry = req.body;
+  const queryText = `UPDATE "feedback" SET "flagged" = $1 WHERE "id" = $2;`;
+  pool.query(queryText, [!entry.flagged, entry.id])
+  .then(result => {
+    console.log('/feedback/flag PUT success:', result);
+    res.sendStatus(200);
+  }).catch(error => {
+    console.log('/feedback/flag error:', error);
+    res.sendStatus(500);
+  });
 });
 
 router.delete('/:id', (req, res) => {
