@@ -38,10 +38,20 @@ class AdminView extends Component {
 
   deleteFeedback = id => () => {
     console.log('deleting feedback with id:', id);
+    const deleteConfirmed = window.confirm('Are you sure?');
+    if (deleteConfirmed) {
+      axios.delete(`/feedback/${id}`)
+      .then(response => {
+        console.log('/feedback DELETE success for id:', id);
+        this.getFeedbackFromServer();
+      }).catch(error => {
+        console.log('/feedback DELETE request error:', error);
+        alert('Error deleting feedback!');
+      });
+    }
   };
 
   render() {
-    const sortedFeedback = [...this.state.feedback].sort((a,b) => a.date - b.date);
     return (
       <div>
         <table>
@@ -56,7 +66,7 @@ class AdminView extends Component {
             </tr>
           </thead>
           <tbody>
-            {sortedFeedback.map(entry => (
+            {this.state.feedback.map(entry => (
               <tr key={entry.id}>
                 <td>{entry.feeling}</td>
                 <td>{entry.understanding}</td>
