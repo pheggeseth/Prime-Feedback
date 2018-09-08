@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import Header from '../Header/Header.js';
 import FeelingView from '../views/form/FeelingView/FeelingView.js';
 import UnderstandingView from '../views/form/UnderstandingView/UnderstandingView.js';
@@ -16,6 +16,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <Header />
+          <Route exact path="/" component={() => <Redirect to="/form/feeling"/>} />
           <Route path="/form/feeling" component={FeelingView} />
           <Route path="/form/understanding" component={UnderstandingView} />
           <Route path="/form/support" component={SupportView} />
