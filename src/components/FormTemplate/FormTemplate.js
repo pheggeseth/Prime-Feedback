@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as actions from '../../redux/actions.js';
 
-
+// This is a generic form template which will update a state in Redux
+// according to the category given in this.props.category.
+// For example, given a category of "feeling", clicking the Next button
+// will cause the value of the input field to be send to the Redux store
+// along with an action of 'UPDATE_FEELING'
 class FormTemplate extends Component {
   constructor(props) {
     super(props);
@@ -19,23 +24,38 @@ class FormTemplate extends Component {
     });
   };
 
+  saveValueToRedux = value => {
+    const action = {
+      type: actions[`UPDATE_${this.props.category.toUpperCase()}`],
+      payload: value
+    };
+    this.props.dispatch(action);
+  };
+
+  goToPage = path => this.props.history.push(path);
+
   // submitting form should take us to next page, handled by parent view
-  handleNext = () => this.props.onNext(this.state.value);
+  handleNext = () => {
+    const value = this.state.value;
+    const valueInRedux = this.props.reduxState[this.props.category];
+
+    if (value !== valueInRedux) {
+      this.saveValueToRedux(value);
+    }
+    this.goToPage(this.props.nextPage);
+  };
+
+  handleBack = () => this.goToPage(this.props.prevPage);
 
   render() {
-    let backButton = null;
-    // if an onBack prop is provided, render a Back button so we can go to the previous page
-    // handled by parent view
-    if (this.props.onBack) {
-      backButton = <button type="button" onClick={this.props.onBack}>Back</button>;
-    }
-
     return (
       <div>
         <h1>{this.props.prompt}</h1>
         <form>
           <input type="text" value={this.state.value} onChange={this.handleChange}/>
-          {backButton}
+          {this.props.prevPage
+          ? <button type="button" onClick={this.handleBack}>Back</button> 
+          : null}
           <button type="button" onClick={this.handleNext}>Next</button>
         </form>
       </div>
