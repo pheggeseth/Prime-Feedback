@@ -10,6 +10,7 @@ import feeling from './redux/reducers/feeling.reducer';
 import understanding from './redux/reducers/understanding.reducer';
 import support from './redux/reducers/support.reducer';
 import comments from './redux/reducers/comments.reducer';
+import 'typeface-roboto';
 
 const storeInstance = createStore(
  combineReducers({
