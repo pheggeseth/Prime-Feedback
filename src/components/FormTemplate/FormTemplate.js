@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions.js';
-import { Grid, Paper, Typography, TextField, RadioGroup, Radio, FormControlLabel, Button } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // This is a generic form template which will update a state in Redux
@@ -14,7 +24,8 @@ class FormTemplate extends Component {
     super(props);
     // set the initial state of the input field to whatever is in Redux, if anything
     this.state = {
-      value: this.props.reduxState[this.props.category]
+      value: this.props.reduxState[this.props.category],
+      showErrorSnackbar: false
     };
   }
 
@@ -52,7 +63,9 @@ class FormTemplate extends Component {
       }
       this.goToPage(this.props.nextPage);
     } else {
-      alert('Please give feedback before continuing.');
+      this.setState({
+        showErrorSnackbar: true // show Snackbar to let user know they need to complete feedback before continuing
+      });
       return;
     }
   };
@@ -61,6 +74,16 @@ class FormTemplate extends Component {
   // this will abandon changes on this page if the user has not first clicked "Next"
   handleBack = () => this.goToPage(this.props.prevPage);
   // TODO: add confirm dialog letting user know their changes will be abandoned
+
+  handleErrorSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({
+      showErrorSnackbar: false
+    });
+  };
 
   render() {
     let inputField = null;
@@ -114,10 +137,34 @@ class FormTemplate extends Component {
             </Grid>
           </Paper>
         </Grid>
+        {/* Snackbar format from Material-Ui website */}
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={this.state.showErrorSnackbar}
+          autoHideDuration={3000}
+          onClose={this.handleErrorSnackbarClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">Please give feedback before continuing...</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={this.handleErrorSnackbarClose}
+            >
+              <CloseIcon />
+            </IconButton>,
+          ]}
+        />
       </Grid>
     );
-  }
-}
+  } // end render
+} // end FormTemplate
 
 // HELPER FUNCTIONS
 const entryIsCompleted = entry => {
