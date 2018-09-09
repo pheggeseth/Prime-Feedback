@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ErrorSnackbar from '../../../ErrorSnackbar/ErrorSnackbar.js';
+import { RESET_FORM } from '../../../../redux/actions.js';
 
 class SubmitView extends Component {
   constructor(props) {
@@ -52,6 +53,11 @@ class SubmitView extends Component {
     });
   };
 
+  handleStartOver = () => {
+    this.props.dispatch({type: RESET_FORM});
+    this.goToPage('/'); // this will redirect to the feeling page, would be useful if the order of views ever changed
+  };
+
   render() {
     return(
       <Grid container justify="center">
@@ -67,7 +73,7 @@ class SubmitView extends Component {
             <Grid container justify="space-between" alignItems="flex-end" style={{height: '40%'}}>
               <Grid item style={{flexGrow: 1}}>
                 <Grid container justify="flex-start">
-                  <Button color="secondary">Start over</Button>
+                  <Button color="secondary" onClick={this.handleStartOver}>Start over</Button>
                 </Grid>
               </Grid>
               <Grid item style={{marginRight: '10px'}}>

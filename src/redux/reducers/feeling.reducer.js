@@ -1,9 +1,11 @@
-import { UPDATE_FEELING } from '../actions.js';
+import { UPDATE_FEELING, RESET_FORM } from '../actions.js';
 
 const feeling = (state = '', action) => {
   if (action.type === UPDATE_FEELING) {
     const newState = action.payload;
     return newState;
+  } else if (action.type === RESET_FORM) {
+    return '';
   } else {
     return state;
   }
