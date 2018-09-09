@@ -82,7 +82,7 @@ class AdminView extends Component {
               <TableBody>
                 {this.state.feedback.map(entry => (
                   <TableRow key={entry.id}>
-                    <TableCell>{moment(entry.date).format('M/D/YYYY, h:mmA')}</TableCell>
+                    <TableCell>{moment(entry.date).format('M/D/YYYY, h:mm A')}</TableCell>
                     <TableCell numeric>{entry.feeling}</TableCell>
                     <TableCell numeric>{entry.understanding}</TableCell>
                     <TableCell numeric>{entry.support}</TableCell>
@@ -105,32 +105,6 @@ class AdminView extends Component {
           </Paper>
         </Grid>
       </Grid>
-      // <div>
-      //   <table>
-      //     <thead>
-      //       <tr>
-      //         <th>Feeling</th>
-      //         <th>Understanding</th>
-      //         <th>Support</th>
-      //         <th>Comments</th>
-      //         <th>Flagged</th>
-      //         <th>Delete</th>
-      //       </tr>
-      //     </thead>
-      //     <tbody>
-      //       {this.state.feedback.map(entry => (
-      //         <tr key={entry.id}>
-      //           <td>{entry.feeling}</td>
-      //           <td>{entry.understanding}</td>
-      //           <td>{entry.support}</td>
-      //           <td>{entry.comments}</td>
-      //           <td><input type="checkbox" checked={entry.flagged} onChange={this.toggleFeedbackFlag(entry)}/>{`${entry.flagged}`}</td>
-      //           <td><button onClick={this.deleteFeedback(entry.id)}>Delete</button></td>
-      //         </tr>
-      //       ))}
-      //     </tbody>
-      //   </table>
-      // </div>
     );
   }
 }
