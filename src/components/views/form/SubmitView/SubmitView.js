@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import ErrorSnackbar from '../../../ErrorSnackbar/ErrorSnackbar.js';
+import MessageSnackbar from '../../../MessageSnackbar/MessageSnackbar.js';
 import { RESET_FORM } from '../../../../redux/actions.js';
 import { entryIsCompleted } from '../../../../modules/helperFunctions.js';
 
@@ -13,7 +13,7 @@ class SubmitView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showPostErrorSnackbar: false,
+      showPostMessageSnackbar: false,
       showCompleteFieldsSnackbar: false
     };
   }
@@ -39,7 +39,7 @@ class SubmitView extends Component {
       }).catch(error => {
         console.log('/feedback POST request error:', error);
         this.setState({
-          showPostErrorSnackbar: true
+          showPostMessageSnackbar: true
         });
       });
     } else {
@@ -49,7 +49,7 @@ class SubmitView extends Component {
     }
   }; // end handleSubmit
 
-  handleErrorSnackbarClose = name => () => {
+  handleMessageSnackbarClose = name => () => {
     this.setState({
       [name]: false
     });
@@ -87,14 +87,14 @@ class SubmitView extends Component {
             </Grid>
           </Paper>
         </Grid>
-        <ErrorSnackbar 
-          open={this.state.showPostErrorSnackbar} 
-          onClose={this.handleErrorSnackbarClose('showPostErrorSnackbar')} 
+        <MessageSnackbar 
+          open={this.state.showPostMessageSnackbar} 
+          onClose={this.handleMessageSnackbarClose('showPostMessageSnackbar')} 
           message="Error submitting feedback!"
         />
-        <ErrorSnackbar 
+        <MessageSnackbar 
           open={this.state.showCompleteFieldsSnackbar} 
-          onClose={this.handleErrorSnackbarClose('showCompleteFieldsSnackbar')} 
+          onClose={this.handleMessageSnackbarClose('showCompleteFieldsSnackbar')} 
           message="Please go back and complete all form fields!"
         />
       </Grid>
