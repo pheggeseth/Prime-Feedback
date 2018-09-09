@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import ErrorSnackbar from '../../../ErrorSnackbar/ErrorSnackbar.js';
 
 class SubmitView extends Component {
   constructor(props) {
@@ -16,6 +17,8 @@ class SubmitView extends Component {
   }
   // uses react-router-dom to navigate to a specific view
   goToPage = path => this.props.history.push(path);
+
+  handleBack = () => this.goToPage('/form/comments');
 
   handleSubmit = () => {
     const newFeedback = {
@@ -32,19 +35,28 @@ class SubmitView extends Component {
         this.goToPage('/form/success');
       }).catch(error => {
         console.log('/feedback POST request error:', error);
-        alert('Error submitting feedback!');
+        this.setState({
+          showPostErrorSnackbar: true
+        });
       });
     } else {
-      alert('Please go back and complete all form fields!');
-      return;
+      this.setState({
+        showCompleteFieldsSnackbar: true
+      });
     }
   }; // end handleSubmit
+
+  handleErrorSnackbarClose = name => () => {
+    this.setState({
+      [name]: false
+    });
+  };
 
   render() {
     return(
       <Grid container justify="center">
         <Grid item sm={6}>
-          <Paper style={{marginTop: '40px', padding: '20px'}}>
+          <Paper style={{height: '250px', marginTop: '40px', padding: '20px'}}>
             <Grid container justify="center" alignItems="center" style={{height: '60%'}}>
               <Grid item>
               <Typography variant="display1" gutterBottom>
@@ -59,20 +71,25 @@ class SubmitView extends Component {
                 </Grid>
               </Grid>
               <Grid item style={{marginRight: '10px'}}>
-                <Button>Back</Button>
+                <Button onClick={this.handleBack}>Back</Button>
               </Grid>
               <Grid item>
-                <Button color="primary" variant="raised">Submit</Button>
+                <Button color="primary" variant="raised" onClick={this.handleSubmit}>Submit</Button>
               </Grid>
-              
             </Grid>
           </Paper>
         </Grid>
+        <ErrorSnackbar 
+          open={this.state.showPostErrorSnackbar} 
+          onClose={this.handleErrorSnackbarClose('showPostErrorSnackbar')} 
+          message="Error submitting feedback!"
+        />
+        <ErrorSnackbar 
+          open={this.state.showCompleteFieldsSnackbar} 
+          onClose={this.handleErrorSnackbarClose('showCompleteFieldsSnackbar')} 
+          message="Please go back and complete all form fields!"
+        />
       </Grid>
-      // <div>
-      //   <h1>Would you like to submit your feedback?</h1>
-      //   <button type="button" onClick={this.handleSubmit}>Submit Feedback</button>
-      // </div>
     );
   }
 }
