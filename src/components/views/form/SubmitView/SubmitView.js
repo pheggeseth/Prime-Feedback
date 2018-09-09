@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ErrorSnackbar from '../../../ErrorSnackbar/ErrorSnackbar.js';
 import { RESET_FORM } from '../../../../redux/actions.js';
+import { entryIsCompleted } from '../../../../modules/helperFunctions.js';
 
 class SubmitView extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class SubmitView extends Component {
   }
   // uses react-router-dom to navigate to a specific view
   goToPage = path => this.props.history.push(path);
-
+  
   handleBack = () => this.goToPage('/form/comments');
 
   handleSubmit = () => {
@@ -33,7 +34,8 @@ class SubmitView extends Component {
       axios.post('/feedback', newFeedback)
       .then(response => {
         console.log('/feedback POST request success:', response);
-        this.goToPage('/form/success');
+        this.props.dispatch({type: RESET_FORM});
+        this.props.history.push({pathname: '/form/success', state:{prevPath: '/form/submit'}});
       }).catch(error => {
         console.log('/feedback POST request error:', error);
         this.setState({
@@ -99,16 +101,6 @@ class SubmitView extends Component {
     );
   }
 }
-
-// HELPER FUNCTIONS
-const entryIsCompleted = entry => {
-  const [key, value] = entry;
-  if (key === 'comments') {
-    return true; // comments are optional
-  } else {
-    return Number(value) > 0;
-  }
-};
 
 const mapReduxStateToProps = (reduxState) => ({reduxState});
 export default connect(mapReduxStateToProps)(SubmitView);

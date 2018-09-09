@@ -11,6 +11,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar.js';
+import { entryIsCompleted } from '../../modules/helperFunctions.js';
 
 // This is a generic form template which will update a state in Redux
 // according to the category given in this.props.category.
@@ -144,16 +145,6 @@ class FormTemplate extends Component {
     );
   } // end render
 } // end FormTemplate
-
-// HELPER FUNCTIONS
-const entryIsCompleted = entry => {
-  const [key, value] = entry;
-  if (key === 'comments') {
-    return true; // comments are optional
-  } else {
-    return Number(value) > 0;
-  }
-};
 
 const mapReduxStateToProps = (reduxState) => ({reduxState});
 export default connect(mapReduxStateToProps)(FormTemplate);

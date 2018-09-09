@@ -14,7 +14,6 @@ import { faSadCry, faFrown, faMeh, faSmile, faSmileBeam } from '@fortawesome/fre
 
 library.add(faSadCry, faFrown, faMeh, faSmile, faSmileBeam);
 
-
 class App extends Component {
   render() {
     return (
