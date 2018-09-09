@@ -9,6 +9,11 @@ import CommentsView from '../views/form/CommentsView/CommentsView.js';
 import SubmitView from '../views/form/SubmitView/SubmitView.js';
 import SuccessView from '../views/form/SuccessView/SuccessView.js';
 import AdminView from '../views/AdminView/AdminView.js';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSadCry, faFrown, faMeh, faSmile, faSmileBeam } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faSadCry, faFrown, faMeh, faSmile, faSmileBeam);
+
 
 class App extends Component {
   render() {

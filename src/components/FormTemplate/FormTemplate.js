@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions.js';
+import { Grid, Paper, Typography, TextField, RadioGroup, Radio, FormControlLabel, Button } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // This is a generic form template which will update a state in Redux
 // according to the category given in this.props.category.
@@ -66,23 +68,53 @@ class FormTemplate extends Component {
     let nextButtonIfPath = null;
 
     if (this.props.category === 'comments') {
-      inputField = <input type="text" value={this.state.value} onChange={this.handleChange} />
+      inputField = 
+        <TextField 
+          placeholder="Add comments here..."
+          multiline 
+          margin="normal" 
+          style={{width: '300px'}} />;
     } else {
-      inputField = <input type="number" min="1" max="5" value={this.state.value} onChange={this.handleChange} />
+      inputField = 
+      <RadioGroup value={this.state.value} onChange={this.handleChange} row>
+        <FormControlLabel value="1" control={<Radio checkedIcon={<FontAwesomeIcon icon="sad-cry" />} />} label="1" />
+        <FormControlLabel value="2" control={<Radio checkedIcon={<FontAwesomeIcon icon="frown" />} />} label="2" />
+        <FormControlLabel value="3" control={<Radio checkedIcon={<FontAwesomeIcon icon="meh" />} />} label="3" />
+        <FormControlLabel value="4" control={<Radio checkedIcon={<FontAwesomeIcon icon="smile" />} />} label="4" />
+        <FormControlLabel value="5" control={<Radio checkedIcon={<FontAwesomeIcon icon="smile-beam" />} />} label="5" />
+      </RadioGroup>;
     }
 
-    if (this.props.prevPage) backButtonIfPath = <button type="button" onClick={this.handleBack}>Back</button>;
-    if (this.props.nextPage) nextButtonIfPath = <button type="button" onClick={this.handleNext}>Next</button>;
+    if (this.props.prevPage) backButtonIfPath = <Button onClick={this.handleBack}>Back</Button>;
+    if (this.props.nextPage) nextButtonIfPath = <Button color="primary" variant="raised" onClick={this.handleNext}>Next</Button>;
 
     return (
-      <div>
-        <h1>{this.props.prompt}</h1>
-        <form>
-          {inputField}
-          {backButtonIfPath}
-          {nextButtonIfPath}
-        </form>
-      </div>
+      <Grid container justify="center">
+        <Grid item sm={6}>
+          <Paper style={{height: '250px', marginTop: '40px', padding: '20px'}}>
+            <Grid container justify="center" alignItems="center" style={{height: '60%'}}>
+              <Typography variant="display1" gutterBottom>
+                {this.props.prompt}
+              </Typography>
+            </Grid>
+            <Grid container alignContent="flex-end" style={{height: '40%'}}>
+              <Grid container justify="center">
+                <Grid item>
+                  {inputField}
+                </Grid>
+              </Grid>
+              <Grid container justify="space-between" style={{marginTop: '20px'}}>
+                <Grid item>
+                  {backButtonIfPath}
+                </Grid>
+                <Grid item>
+                  {nextButtonIfPath}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }
