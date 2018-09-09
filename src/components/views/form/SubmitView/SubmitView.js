@@ -7,6 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 class SubmitView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showPostErrorSnackbar: false,
+      showCompleteFieldsSnackbar: false
+    };
+  }
   // uses react-router-dom to navigate to a specific view
   goToPage = path => this.props.history.push(path);
 

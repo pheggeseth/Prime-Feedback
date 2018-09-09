@@ -9,10 +9,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar.js';
 
 // This is a generic form template which will update a state in Redux
 // according to the category given in this.props.category.
@@ -75,11 +73,7 @@ class FormTemplate extends Component {
   handleBack = () => this.goToPage(this.props.prevPage);
   // TODO: add confirm dialog letting user know their changes will be abandoned
 
-  handleErrorSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
+  handleErrorSnackbarClose = () => {
     this.setState({
       showErrorSnackbar: false
     });
@@ -90,6 +84,8 @@ class FormTemplate extends Component {
     let backButtonIfPath = null;
     let nextButtonIfPath = null;
 
+    // if we are on the comments page, show a multiline textfield,
+    // otherwise show the standard radio group
     if (this.props.category === 'comments') {
       inputField = 
         <TextField 
@@ -137,30 +133,10 @@ class FormTemplate extends Component {
             </Grid>
           </Paper>
         </Grid>
-        {/* Snackbar format from Material-Ui website */}
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
+        <ErrorSnackbar 
           open={this.state.showErrorSnackbar}
-          autoHideDuration={3000}
           onClose={this.handleErrorSnackbarClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">Please give feedback before continuing...</span>}
-          action={[
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              onClick={this.handleErrorSnackbarClose}
-            >
-              <CloseIcon />
-            </IconButton>,
-          ]}
-        />
+          message={'Please give feedback before continuing...'}/>
       </Grid>
     );
   } // end render
