@@ -92,7 +92,10 @@ class FormTemplate extends Component {
           placeholder="Add comments here..."
           multiline 
           margin="normal" 
-          style={{width: '300px'}} />;
+          style={{width: '300px'}} 
+          value={this.state.value}
+          onChange={this.handleChange}
+        />;
     } else {
       inputField = 
       <RadioGroup value={this.state.value} onChange={this.handleChange} row>
