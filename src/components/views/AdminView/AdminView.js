@@ -12,7 +12,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import moment from 'moment';
 import ConfirmDeleteDialog from '../../ConfirmDeleteDialog/ConfirmDeleteDialog.js';
-import ErrorSnackbar from '../../ErrorSnackbar/ErrorSnackbar.js';
+import MessageSnackbar from '../../MessageSnackbar/MessageSnackbar.js';
 
 
 class AdminView extends Component {
@@ -132,7 +132,7 @@ class AdminView extends Component {
           open={this.state.confirmDeleteDialogIsOpen}
           onClose={this.handleConfirmDeleteDialogClose}
         />
-        <ErrorSnackbar 
+        <MessageSnackbar 
           open={this.state.deleteConfirmedSnackbarIsOpen}
           onClose={() => this.setState({deleteConfirmedSnackbarIsOpen: false})}
           message="Feedback deleted."

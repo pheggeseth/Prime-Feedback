@@ -10,7 +10,7 @@ import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar.js';
+import MessageSnackbar from '../MessageSnackbar/MessageSnackbar.js';
 import { entryIsCompleted } from '../../modules/helperFunctions.js';
 
 // This is a generic form template which will update a state in Redux
@@ -24,7 +24,7 @@ class FormTemplate extends Component {
     // set the initial state of the input field to whatever is in Redux, if anything
     this.state = {
       value: this.props.reduxState[this.props.category],
-      showErrorSnackbar: false
+      showSnackbar: false
     };
   }
 
@@ -63,7 +63,7 @@ class FormTemplate extends Component {
       this.goToPage(this.props.nextPage);
     } else {
       this.setState({
-        showErrorSnackbar: true // show Snackbar to let user know they need to complete feedback before continuing
+        showSnackbar: true // show Snackbar to let user know they need to complete feedback before continuing
       });
       return;
     }
@@ -74,9 +74,9 @@ class FormTemplate extends Component {
   handleBack = () => this.goToPage(this.props.prevPage);
   // TODO: add confirm dialog letting user know their changes will be abandoned
 
-  handleErrorSnackbarClose = () => {
+  handleSnackbarClose = () => {
     this.setState({
-      showErrorSnackbar: false
+      showSnackbar: false
     });
   };
 
@@ -137,9 +137,9 @@ class FormTemplate extends Component {
             </Grid>
           </Paper>
         </Grid>
-        <ErrorSnackbar 
-          open={this.state.showErrorSnackbar}
-          onClose={this.handleErrorSnackbarClose}
+        <MessageSnackbar 
+          open={this.state.showSnackbar}
+          onClose={this.handleSnackbarClose}
           message={'Please give feedback before continuing...'}/>
       </Grid>
     );

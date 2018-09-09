@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 // this is a wrapper component for the Material-UI Snackbar
 // which only takes the open Boolean, onClose handler, and message text as props
-class ErrorSnackbar extends Component {
+class MessageSnackbar extends Component {
   handleClose = (event, reason) => {
     if (reason !== 'clickaway') {
       this.props.onClose();
@@ -42,4 +42,4 @@ class ErrorSnackbar extends Component {
   }
 }
 
-export default ErrorSnackbar;
+export default MessageSnackbar;
