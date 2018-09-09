@@ -12,12 +12,17 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import moment from 'moment';
+import ConfirmDeleteDialog from '../../ConfirmDeleteDialog/ConfirmDeleteDialog.js';
+import ErrorSnackbar from '../../ErrorSnackbar/ErrorSnackbar.js';
+
 
 class AdminView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feedback: []
+      feedback: [],
+      confirmDeleteDialogIsOpen: false,
+      deleteConfirmedSnackbarIsOpen: false
     };
   }
 
@@ -47,18 +52,38 @@ class AdminView extends Component {
     }).catch(error => console.log('/feedback/flag error:', error));
   };
 
-  deleteFeedback = id => () => {
+  deleteFeedback = id => {
     console.log('deleting feedback with id:', id);
-    const deleteConfirmed = window.confirm('Are you sure?');
-    if (deleteConfirmed) {
-      axios.delete(`/feedback/${id}`)
-      .then(response => {
-        console.log('/feedback DELETE success for id:', id);
-        this.getFeedbackFromServer();
-      }).catch(error => {
-        console.log('/feedback DELETE request error:', error);
-        alert('Error deleting feedback!');
+    axios.delete(`/feedback/${id}`)
+    .then(response => {
+      console.log('/feedback DELETE success for id:', id);
+      this.setState({
+        deleteConfirmedSnackbarIsOpen: true
       });
+      this.getFeedbackFromServer();
+    }).catch(error => {
+      console.log('/feedback DELETE request error:', error);
+      alert('Error deleting feedback!');
+    });
+  };
+
+  openConfirmDeleteDialog = id => () => {
+    this.setState({
+      idToDelete: id,
+      confirmDeleteDialogIsOpen: true
+    });
+  };
+
+  handleConfirmDeleteDialogClose = deleteConfirmed => {
+    const id = this.state.idToDelete;
+    this.setState({
+      confirmDeleteDialogIsOpen: false,
+      idToDelete: undefined
+    });
+    if (deleteConfirmed) {
+      this.deleteFeedback(id);
+    } else {
+      return;
     }
   };
 
@@ -94,7 +119,7 @@ class AdminView extends Component {
                       />
                     </TableCell>
                     <TableCell>
-                      <Button color="secondary" onClick={this.deleteFeedback(entry.id)}>
+                      <Button color="secondary" onClick={this.openConfirmDeleteDialog(entry.id)}>
                         <DeleteForeverIcon />
                       </Button>
                     </TableCell>
@@ -104,6 +129,15 @@ class AdminView extends Component {
             </Table>
           </Paper>
         </Grid>
+        <ConfirmDeleteDialog 
+          open={this.state.confirmDeleteDialogIsOpen}
+          onClose={this.handleConfirmDeleteDialogClose}
+        />
+        <ErrorSnackbar 
+          open={this.state.deleteConfirmedSnackbarIsOpen}
+          onClose={() => this.setState({deleteConfirmedSnackbarIsOpen: false})}
+          message="Feedback deleted."
+        />
       </Grid>
     );
   }
