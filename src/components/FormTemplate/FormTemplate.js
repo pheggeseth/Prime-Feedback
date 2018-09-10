@@ -9,9 +9,19 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MessageSnackbar from '../MessageSnackbar/MessageSnackbar.js';
 import { entryIsCompleted } from '../../modules/helperFunctions.js';
+
+const steps = {
+  feeling: 0,
+  understanding: 1,
+  support: 2,
+  comments: 3
+};
 
 // This is a generic form template which will update a state in Redux
 // according to the category given in this.props.category.
@@ -114,13 +124,25 @@ class FormTemplate extends Component {
     return (
       <Grid container justify="center">
         <Grid item sm={6}>
-          <Paper style={{height: '250px', marginTop: '40px', padding: '20px'}}>
-            <Grid container justify="center" alignItems="center" style={{height: '60%'}}>
+          <Paper style={{height: '300px', marginTop: '40px', padding: '20px'}}>
+            {/* stepper container */}
+            <Grid container justify="space-around" alignItems="center" style={{height: '20%'}}>
+              <Stepper activeStep={steps[this.props.category]}>
+                <Step><StepLabel>Feeling</StepLabel></Step>
+                <Step><StepLabel>Understanding</StepLabel></Step>
+                <Step><StepLabel>Support</StepLabel></Step>
+                <Step><StepLabel>Comments</StepLabel></Step>
+                <Step><StepLabel>Submit</StepLabel></Step>
+              </Stepper>
+            </Grid>
+            {/* text container */}
+            <Grid container justify="center" alignItems="center" style={{height: '50%'}}>
               <Typography variant="display1" gutterBottom>
                 {this.props.prompt}
               </Typography>
             </Grid>
-            <Grid container alignContent="flex-end" style={{height: '40%'}}>
+            {/* input/buttons container */}
+            <Grid container alignContent="flex-end" style={{height: '30%'}}>
               <Grid container justify="center">
                 <Grid item>
                   {inputField}
