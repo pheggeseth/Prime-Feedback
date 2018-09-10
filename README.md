@@ -2,7 +2,7 @@
 The seventh weekend project for Prime Digital Academy was to practice using Redux with React and React Router by creating an application for filling out a multi-view feedback form.
 
 ## Built With
-React, Redux, React Router, Node, Express, PostgreSQL, pg, Material-UI, Font Awesome, MomentJS, 
+React, Redux, React Router, Node, Express, PostgreSQL, pg, Material-UI, Font Awesome, MomentJS
 
 ## Installation/Setup
 This application is hosted live via Heroku here:
