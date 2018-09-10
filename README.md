@@ -85,7 +85,7 @@ class UnderstandingView extends Component {
 ```
 - figured out how to use both `<Redirect />` and `<Switch>` from React Router to help improve view navigation by automatically redirecting unknown URLs to the first form view. See the [App.js](./src/components/App/App.js) component.
 
-I also dived deep into the behavior of the React Router history prop to discover that it's possible to pass in a `state` along with the `pathname` when pushing to the history stack. I used this state to prevent the user from directly navigating to the SuccessView unless the previous page was the SubmitView, and the user clicked on the Submit button. For example, in the SubmitView, after the user clicks Submit, and the feedback is successfully saved to the database, I configured the `push` to the SuccessView to be like this:
+I also dove deep into the behavior of the React Router history prop to discover that it's possible to pass in a `state` along with the `pathname` when pushing to the history stack. I used this state to prevent the user from directly navigating to the SuccessView unless the previous page was the SubmitView, and the user clicked on the Submit button. For example, in the SubmitView, after the user clicks Submit, and the feedback is successfully saved to the database, I configured the `push` to the SuccessView to be like this:
 ```javascript
 this.props.history.push({pathname: '/form/success', state: {prevPath: '/form/submit'}});
 ```
